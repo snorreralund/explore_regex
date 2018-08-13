@@ -1,0 +1,3 @@
+# explore_regex
+Package for developing regular expressions. Allows you to inspect the context of the matches, and compare differences and similarities between regular expressions.
+under development... 
