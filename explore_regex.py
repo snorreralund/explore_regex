@@ -99,7 +99,7 @@ class ExploreRegex():
             sample = spans[0:n_samples]
         for start,stop in sample:
             match = self.string[start:stop]
-            start,stop = max([start-context,0]),min([stop,len(self.string)])
+            start,stop = max([start-context,0]),min([stop+context,len(self.string)])
             context_string = self.string[start:stop]
             print('Match: %s\tContext:%s'%(match,context_string))
 
