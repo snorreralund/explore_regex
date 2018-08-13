@@ -12,6 +12,7 @@ class ExploreRegex():
     """
     def __init__(self,sample_string):
         self.string = sample_string
+        self.patterns = []
         self.pattern2span = [] # this container stores all the matches of each pattern.
         self.span_graph = nx.Graph() # defines network that
         self.span2span = nx.Graph()
@@ -34,6 +35,7 @@ class ExploreRegex():
             self.pattern2chars_matched[pattern] = match_n
             self.pattern2idx[pattern] = len(self.pattern2chars_matched) -1
             self.pattern2n_match[pattern] = len(spans)
+            self.patterns.append(pattern)
     def has_overlap(span,span2):
         if span==span2:
             return True
