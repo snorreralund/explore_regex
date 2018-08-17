@@ -110,12 +110,14 @@ class ExploreRegex():
             context_string = self.string[start:stop]
             print('Match: %s\tContext:%s'%(match,context_string))
 
-    def explore_difference(self,pattern,pattern2,context = 0):
+    def explore_difference(self,pattern,pattern2,method='soft',context = 0):
         """returns two lists of matches only matched by one of the expressions and not in the other.
+        Match can be defined as either a perfect match (hard) or overlap between matches (soft).
         Input:
             pattern: regular expression string
             pattern2: regular expression string
             context: defines how much context of the non matches you will see
+            method : define the matching method [hard, soft]
         Return:
             list of pattern1 matches not matched by pattern2,list of pattern2 matches not matched by pattern1
         """
@@ -128,6 +130,21 @@ class ExploreRegex():
         diff = []
         pat_idx,pat_idx2 = self.pattern2idx[pattern],self.pattern2idx[pattern2]
         pattern_pair = tuple(sorted([pat_idx,pat_idx2]))
+
+        if method=='soft':
+            if pattern_pair in self.pattern2pattern_soft:
+                overlap = self.pattern2pattern_soft[pattern_pair]
+            else:
+                overlap = set()
+
+        elif method=='hard':
+            if pattern_pair in self.pattern2pattern:
+                overlap = self.pattern2pattern[pattern_pair]
+            else:
+                overlap = set()
+        else:
+            print('Error: you need to define the method as either soft or hard')
+            return
         if pattern_pair in self.pattern2pattern:
             overlap = self.pattern2pattern[pattern_pair]
         else:
