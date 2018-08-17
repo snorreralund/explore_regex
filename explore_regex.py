@@ -8,7 +8,7 @@ def get_span_overlap(span,span2):
         return min([span[1],span2[1]])-max([span[0],span2[0]])
 
 class ExploreRegex():
-    """This module should allow you to compare the differences between different regular expressions.
+    """This module should allow you to compare the differences in matches between regular expressions.
     """
     def __init__(self,sample_string):
         self.string = sample_string
@@ -27,6 +27,7 @@ class ExploreRegex():
 
 
     def get_spans(self,pattern):
+        "Takes a pattern and locates the spans of the matches."
         if not pattern in self.pattern2chars_matched:
             spans = list(enumerate([result.span() for result in re.finditer(pattern,self.string)]))
             print('------ Pattern: %s\t Matched %d patterns -----' %(pattern,len(spans)))
@@ -39,6 +40,7 @@ class ExploreRegex():
             self.pattern2n_match[pattern] = len(spans)
             self.patterns.append(pattern)
     def has_overlap(span,span2):
+        "Locates overlap between two pattern spans"
         if span==span2:
             return True
         for val in span:
@@ -46,6 +48,7 @@ class ExploreRegex():
                 return True
         return False
     def make_overlap_network(self):
+        "Constructs Networks between patterns and spans, span2span and pattern2pattern."
         patterns = self.pattern2span
         done = self.pattern_comparisons
         span_g = self.span2span
@@ -91,7 +94,7 @@ class ExploreRegex():
 
                 done.add((i,j))
     def explore_pattern(self,pattern,n_samples=10,context=10,shuffle=True):
-        """prints examples of matches including context:
+        """Prints examples of matches including context. Use the context argument for in- or decreasing the context.
         """
         self.get_spans(pattern)
         idx = self.pattern2idx[pattern]
@@ -109,7 +112,6 @@ class ExploreRegex():
 
     def explore_difference(self,pattern,pattern2,context = 0):
         """returns all matches that are not matched by both patterns.
-        and with overlap less than a specific threshold.
         Input:
             pattern: regular expression string
             pattern2: regular expression string
@@ -137,15 +139,18 @@ class ExploreRegex():
                 diff.append(self.string[max([span[0]-context,0]):min([span[1]+context,len(self.string)])])
         return diff
     def update_spans(self):
+        "Updates matches if a new string is defined."
         self.pattern2span = []
         patterns = list(self.pattern2chars_matched)
         self.pattern2chars_matched = {}
         for pattern in self.patterns:
             self.get_spans(pattern)
     def define_string_sample(self,string):
+        "Defines and updates the string to explore matches with."
         self.string = string
         self.update_spans()
     def create_similarity_matrix(self,method='hard'):
+        "Creates a directed similarity matrix between patterns defined."
         pat2n = self.pattern2n_match
         patterns = [i[0] for i in self.pattern2span]
         #if len(self.similarity_matrix) == len(patterns): # check if it is already defined.
@@ -190,6 +195,15 @@ class ExploreRegex():
         if method=='hard':
             self.similarity_matrix = mat
     def plot_similarity(self,method='hard'):
+        """Plots a directed similarity matrix between patterns.
+        The similarity is defined as number of overlapping matches divided by number of matches.
+        The definition of overlapping matches between two patterns can be changed from hard (only exact matches) to soft (matches has overlap),
+        This will allow you to investigate two different things:
+            * Using the 'hard' method you can see how patterns
+            * Using 'soft' you can see how expressions narrows the number of accepted patterns.
+
+        method: str ['hard','soft'] parameter for defining overlap between regular expression matches. 'hard' entails exact match, and 'soft' defines match as an overlap between matches.
+         """
         patterns = self.patterns
         self.create_similarity_matrix(method)
         if method=='soft':
@@ -202,6 +216,14 @@ class ExploreRegex():
         plt.yticks(np.arange(len(patterns))+.5,patterns,rotation=0)
         plt.title('Similarity Matrix')
     def report(self,method='hard',plot=True):
+        """Report the number of matches of each pattern developed and plot a similarity matrix between them.
+        The similarity is defined as number of overlapping matches divided by number of matches.
+        The definition of overlapping matches between two patterns can be changed from hard (only exact matches) to soft (matches has overlap),
+        This will allow you to investigate two different things:
+            * Using the 'hard' method you can see how patterns
+            * Using 'soft' you can see how expressions narrows the number of accepted patterns.
+        method: str ['hard','soft'] parameter for defining overlap between regular expression matches. 'hard' entails exact match, and 'soft' defines match as an overlap between matches.
+        """
         for pattern,n in self.pattern2n_match.items():
             print('------ Pattern: %s\t Matched %d patterns -----' %(pattern,n))
         if plot:
