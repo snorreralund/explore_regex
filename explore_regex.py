@@ -111,11 +111,14 @@ class ExploreRegex():
             print('Match: %s\tContext:%s'%(match,context_string))
 
     def explore_difference(self,pattern,pattern2,context = 0):
-        """returns all matches that are not matched by both patterns.
+        """returns two lists of matches only matched by one of the expressions and not in the other.
         Input:
             pattern: regular expression string
             pattern2: regular expression string
-            context: defines how much context of the non matches you will see"""
+            context: defines how much context of the non matches you will see
+        Return:
+            list of pattern1 matches not matched by pattern2,list of pattern2 matches not matched by pattern1
+        """
 
         # check if patterns have been matched.
         self.get_spans(pattern)
@@ -133,11 +136,17 @@ class ExploreRegex():
             n = '%d_%d'%(pat_idx,num)
             if not n in overlap:
                 diff.append(self.string[span[0]:span[1]])
+        diff2 = []
         for num,span in self.pattern2span[pat_idx2][1]:
             n = '%d_%d'%(pat_idx2,num)
             if not n in overlap:
-                diff.append(self.string[max([span[0]-context,0]):min([span[1]+context,len(self.string)])])
-        return diff
+                diff2.append(self.string[max([span[0]-context,0]):min([span[1]+context,len(self.string)])])
+        print('''Found %d overlaps between the expressions:
+        pattern1: %s \t and
+        pattern2: %s
+        %d included in pattern1 and not in the pattern2
+        %d was included in pattern2 and not in pattern1'''%(len(overlap),pattern,pattern2,len(diff),len(diff2)))
+        return diff,diff2
     def update_spans(self):
         "Updates matches if a new string is defined."
         self.pattern2span = []
