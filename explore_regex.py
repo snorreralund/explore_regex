@@ -136,7 +136,6 @@ class ExploreRegex():
                 overlap = self.pattern2pattern_soft[pattern_pair]
             else:
                 overlap = set()
-
         elif method=='hard':
             if pattern_pair in self.pattern2pattern:
                 overlap = self.pattern2pattern[pattern_pair]
@@ -145,10 +144,6 @@ class ExploreRegex():
         else:
             print('Error: you need to define the method as either soft or hard')
             return
-        if pattern_pair in self.pattern2pattern:
-            overlap = self.pattern2pattern[pattern_pair]
-        else:
-            overlap = set()
         for (num,span) in self.pattern2span[pat_idx][1]:
             n = '%d_%d'%(pat_idx,num)
             if not n in overlap:
