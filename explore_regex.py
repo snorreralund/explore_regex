@@ -256,4 +256,5 @@ class ExploreRegex():
         if plot:
             self.plot_similarity(method)
     def compile_pattern(self,pattern):
+        """Method to compile the final pattern using the default flags set"""
         return re.compile(pattern,flags=self.flags)
