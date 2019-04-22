@@ -177,6 +177,7 @@ class ExploreRegex():
         self.update_spans()
     def create_similarity_matrix(self,method='hard'):
         "Creates a directed similarity matrix between patterns defined."
+        self.make_overlap_network()
         pat2n = self.pattern2n_match
         patterns = [i[0] for i in self.pattern2span]
         #if len(self.similarity_matrix) == len(patterns): # check if it is already defined.
