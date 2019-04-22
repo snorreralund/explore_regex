@@ -40,6 +40,10 @@ class ExploreRegex():
             self.pattern2idx[pattern] = len(self.pattern2chars_matched) -1
             self.pattern2n_match[pattern] = len(spans)
             self.patterns.append(pattern)
+        else:
+            print('------ Pattern: %s\t Matched %d patterns -----' %(pattern,len(self.pattern2n_match[pattern])))
+
+
     def has_overlap(span,span2):
         "Locates overlap between two pattern spans"
         if span==span2:
