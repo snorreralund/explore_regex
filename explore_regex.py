@@ -152,7 +152,7 @@ class ExploreRegex():
         for (num,span) in self.pattern2span[pat_idx][1]:
             n = '%d_%d'%(pat_idx,num)
             if not n in overlap:
-                diff.append(self.string[span[0]:span[1]])
+                diff.append(self.string[max([span[0]-context,0]):min([span[1]+context,len(self.string)])])
         diff2 = []
         for num,span in self.pattern2span[pat_idx2][1]:
             n = '%d_%d'%(pat_idx2,num)
