@@ -41,7 +41,7 @@ class ExploreRegex():
             self.pattern2n_match[pattern] = len(spans)
             self.patterns.append(pattern)
         else:
-            print('------ Pattern: %s\t Matched %d patterns -----' %(pattern,len(self.pattern2n_match[pattern])))
+            print('------ Pattern: %s\t Matched %d patterns -----' %(pattern,self.pattern2n_match[pattern]))
 
 
     def has_overlap(span,span2):
