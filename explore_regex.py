@@ -255,5 +255,5 @@ class ExploreRegex():
             print('------ Pattern: %s\t Matched %d patterns -----' %(pattern,n))
         if plot:
             self.plot_similarity(method)
-    def compile_pattern(pattern):
+    def compile_pattern(self,pattern):
         return re.compile(pattern,flags=self.flags)
