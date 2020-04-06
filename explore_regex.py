@@ -79,8 +79,8 @@ class ExploreRegex():
                         n,n2 = '%d_%d'%(i,num),'%d_%d'%(j,num2)
                         span_g.add_edge(n,n2)
                         span_g[n][n2]['similarity'] = sim
-                        span_g.node[n]['pattern'] = i
-                        span_g.node[n2]['pattern'] = j
+                        span_g.nodes[n]['pattern'] = i
+                        span_g.nodes[n2]['pattern'] = j
                         if sim==1:
                             try:
                                 pattern2pattern[pattern_pair].add(n)
